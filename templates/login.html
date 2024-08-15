@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+
+    <!-- Include required scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            background-image: url("rent.jpg");
+            background-size: 400px 500px;
+            opacity: 0.9;
+            background-position: left;
+            background-repeat: no-repeat;
+            justify-content: center;
+            font-family: 'Dosis', sans-serif;
+            border-radius: 15px;
+        }
+
+        .container {
+            z-index: 1;
+            background-color: whitesmoke;
+            display: inline-block;
+            border-radius: 20px;
+            margin-left: 35vw;
+            margin-top: 1vh;
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.3);
+            height: 80vh;
+            width: 30vw;
+            padding: 20px;
+        }
+
+        .container input {
+            width: 20vw;
+            position: relative;
+            height: 9vh;
+            border-radius: 15px;
+            box-shadow: 0 6px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.3);
+            border: none;
+            outline: none;
+            padding: 20px;
+            display: block;
+            margin: 7vh 0vw 0vw 5vw;
+            text-align: center;
+        }
+
+        #clickButton {
+            background: linear-gradient(to right, #6666ff 0%, #ff00ff 100%);
+            border-radius: 25px;
+            color: whitesmoke;
+            font-size: 1.0em;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color: fuchsia; font-size: 2.0em; text-align: center; padding: 10px; margin: 4vh 0 0 0;">Login</h1>
+
+        <!-- Display error message if exists -->
+        {% if error %}
+            <p style="color: red;">{{ error }}</p>
+        {% endif %}
+
+        <!-- Display wrong attempts counter -->
+        {% if session['wrong_attempts'] is not none %}
+            <p>Wrong attempts: {{ session['wrong_attempts'] }}</p>
+        {% endif %}
+
+        <!-- Login form -->
+        <form id="form1" method="post" action="" onsubmit="return check_form();">
+            <input type="text" name="username" id="name" placeholder="Username..." autocomplete="off"> 
+            <input type="password" name="psw" id="pass" placeholder="Password....">
+            <input type="submit" value="Submit" id="clickButton">
+        </form>
+    </div>
+
+    <!-- JavaScript to handle login attempts -->
+    <script>
+        var login_attempts = 3;
+
+        function check_form() {
+            var name = document.getElementById("name").value;
+            var pass = document.getElementById("pass").value;
+
+            // Perform login validation (replace this with your logic)
+            if (name === "admin" && pass === "password") {
+                alert("Successfully Logged In");
+                window.open('https://vtop.vit.ac.in/vtop/initialProcess');
+                document.getElementById("name").value = "";
+                document.getElementById("pass").value = "";
+                return true; // Proceed to submit the form
+            } else {
+                login_attempts--;
+                if (login_attempts === 0) {
+                    alert("No Login Attempts Available");
+                } else {
+                    alert("Login Failed! " + login_attempts + " attempts remaining.");
+                    if (login_attempts === 0) {
+                        // Capture image or perform other actions on final attempt
+                        alert("Final Login Attempt! Capture Image...");
+                        // Uncomment the following line to disable form inputs on final attempt
+                        // document.getElementById("form1").disabled = true;
+                    }
+                }
+                return false; // Prevent form submission
+            }
+        }
+    </script>
+</body>
+</html>

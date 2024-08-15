@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h2>Admin Panel</h2>
+    
+    <!-- Display wrong attempts counter -->
+    <p>Wrong attempts: {{ session.get('wrong_attempts', 0) }}</p>
+
+    <!-- Show captured image if wrong attempts exceed three -->
+    {% if session.get('wrong_attempts', 0) >= 3 %}
+        <img src="{{ url_for('static', filename='webcam98.jpg') }}" alt="Captured Image">
+    {% else %}
+        <p>Image will be displayed after 3 wrong attempts.</p>
+    {% endif %}
+</body>
+</html>
